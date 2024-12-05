@@ -1,3 +1,12 @@
+const app = require('./app') // varsinainen Express-sovellus
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
+})
+
+/*
 require('dotenv').config()
 const express = require('express')
 const app = express()
@@ -6,34 +15,6 @@ const Note = require('./models/note')
 
 
 app.use(cors())
-
-// const mongoose = require('mongoose')
-
-// const password = process.argv[2]
-
-// ÄLÄ KOSKAAN TALLETA SALASANOJA GitHubiin!
-// const url = `mongodb+srv://tomasvalkonen:${password}@cluster0.8r4go.mongodb.net/noteApp?retryWrites=true&w=majority`
-
-/*
-mongoose.set('strictQuery',false)
-
-mongoose.connect(url)
-
-const noteSchema = new mongoose.Schema({
-  content: String,
-  important: Boolean,
-})
-
-noteSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
-
-const Note = mongoose.model('Note', noteSchema)
-*/
 
 let notes = [
   {
@@ -74,12 +55,6 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-/*
-app.get('/api/notes', (request, response) => {
-  response.json(notes)
-})
-*/
-
 app.get('/api/notes', (request, response) => {
   Note.find({}).then(notes => {
     response.json(notes)
@@ -112,43 +87,6 @@ app.post('/api/notes', (request, response, next) => {
   .catch(error => next(error))
 })
 
-/*
-app.post('/api/notes', (request, response) => {
-  const body = request.body
-
-  if (!body.content) {
-    return response.status(400).json({ 
-      error: 'content missing' 
-    })
-  }
-
-  const note = {
-    content: body.content,
-    important: body.important || false,
-    id: generateId(),
-  }
-
-  notes = notes.concat(note)
-
-  response.json(note)
-})
-*/
-/*
-app.put('/api/notes/:id', (request, response, next) => {
-  const body = request.body
-
-  const note = {
-    content: body.content,
-    important: body.important,
-  }
-
-  Note.findByIdAndUpdate(request.params.id, note, { new: true })
-    .then(updatedNote => {
-      response.json(updatedNote)
-    })
-    .catch(error => next(error))
-})
-*/
 app.put('/api/notes/:id', (request, response, next) => {
 
   const { content, important } = request.body
@@ -177,34 +115,8 @@ app.get('/api/notes/:id', (request, response, next) => {
       }
     })
     .catch(error => next(error))
-    /*
-    .catch(error => {
-      console.log(error)
-      response.status(400).send({ error: 'malformatted id' })
-    })
-    */
 })
 
-/*
-app.get('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
-  if (note) {
-    response.json(note)
-  } else {
-    console.log('x')
-    response.status(404).end()
-  }
-})
-*/
-/*
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
-
-  response.status(204).end()
-})
-*/
 app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
     .then(result => {
@@ -231,9 +143,9 @@ const errorHandler = (error, request, response, next) => {
 // tämä tulee kaikkien muiden middlewarejen ja routejen rekisteröinnin jälkeen!
 app.use(errorHandler)
 
-
 // const PORT = process.env.PORT || 3001
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
-})
+}
+*/
