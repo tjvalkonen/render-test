@@ -4,5 +4,5 @@ content-type: application/json
 {
     "content": "Test note with userId",
     "important": true,
-    "userId": ""
+    "userId": "677f1cab040fc09c4b226c40"
 }
